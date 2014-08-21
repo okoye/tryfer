@@ -5,20 +5,24 @@ Re-writing trace.py without twisted requirements and some improvements
 import math
 import time
 import uuid
+import random
 
 from tryfer._thrift.zipkinCore import constants
+from tryfer.tracer2 import NoopTracer
 
 def _generate_unique_id():
     '''
     Create a random 64 bit signed integer for use as trace and span IDs.
     '''
-    return uuid.uuid1().int >> 64
+    #return uuid.uuid1().int >> 64
+    return random.randint(0, (2 ** 56) - 1)
 
 class Trace(object):
     '''
     A trace provider which delegates to zero or more tracers and allows
     setting a default endpoint to associate with annotations
     '''
+
 
     def __init__(self, name, trace_id=None, span_id=None,
                 parent_span_id=None, tracers=None):
@@ -31,10 +35,13 @@ class Trace(object):
         self.name = name
         self.trace_id = trace_id or _generate_unique_id()
         self.span_id = span_id or _generate_unique_id()
+        self.parent_span_id = parent_span_id
         self._tracers = tracers or NoopTracer()
         self._endpoint = None
 
     def __eq__(self, other):
+        if not other:
+            return False
         return ((self.trace_id, self.span_id, self.parent_span_id) ==
                 (other.trace_id, other.span_id, other.parent_span_id))
 
@@ -90,7 +97,7 @@ class Endpoint(object):
         self.service_name = service_name
 
     def __eq__(self, other):
-        if other is None:
+        if not other:
             return False
 
         return ((self.ipv4, self.port, self.service_name) ==
@@ -116,7 +123,9 @@ class Annotation(object):
         self.endpoint = endpoint
 
     def __eq__(self, other):
-        return ((self.name, self.value self.annotation_type, self.endpoint) ==
+        if not other:
+            return False
+        return ((self.name, self.value, self.annotation_type, self.endpoint) ==
                 (other.name, other.value, other.annotation_type, other.endpoint))
 
     def __ne__(self, other):
