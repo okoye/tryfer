@@ -159,6 +159,9 @@ Now in terminal #1 we should see the following::
       }
     ]
 
+A note on tests:
+run a test by trial tests 
+
 
 License
 -------

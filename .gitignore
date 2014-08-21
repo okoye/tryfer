@@ -3,3 +3,6 @@ _trial_temp
 htmlcov
 *.pyc
 twistd.pid
+build/
+dist/
+*.egg-info/
