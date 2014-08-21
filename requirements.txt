@@ -1,5 +1,3 @@
 thrift==0.8.0
-Twisted>=12.0.0
-zope.interface==4.0.1
 mock
-scrivener==0.2
+scribe_logger
