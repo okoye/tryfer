@@ -18,7 +18,7 @@ import mock
 
 from zope.interface.verify import verifyObject
 
-from twisted.trial.unittest import TestCase
+from unittest import TestCase
 
 from tryfer.interfaces import ITrace, IAnnotation, IEndpoint
 from tryfer.trace import Trace, Annotation, Endpoint
@@ -27,8 +27,6 @@ MAX_ID = math.pow(2, 63) - 1
 
 
 class TraceTests(TestCase):
-    def test_verifyObject(self):
-        verifyObject(ITrace, Trace('test'))
 
     def test_new_Trace(self):
         t = Trace('test_trace')
@@ -93,13 +91,6 @@ class TraceTests(TestCase):
             trace,
             Trace('test_trace', trace_id=1, span_id=1, parent_span_id=2))
 
-    def test_repr(self):
-        trace = Trace('test_trace', trace_id=1, span_id=1, parent_span_id=1)
-
-        self.assertEqual(
-            repr(trace),
-            "Trace('test_trace', trace_id=1, span_id=1, parent_span_id=1)")
-
 
 class AnnotationTests(TestCase):
     def setUp(self):
@@ -109,9 +100,6 @@ class AnnotationTests(TestCase):
 
     def tearDown(self):
         self.time_patcher.stop()
-
-    def test_verifyObject(self):
-        verifyObject(IAnnotation, Annotation('foo', 'bar', 'string'))
 
     def test_timestamp(self):
         a = Annotation.timestamp('test')
@@ -178,24 +166,8 @@ class AnnotationTests(TestCase):
             Annotation('foo', 'bar', 'string',
                        Endpoint('127.0.0.1', 0, 'test')))
 
-    def test_repr(self):
-        annotation = Annotation(
-            'foo', 'bar', 'string', Endpoint('127.0.0.1', 0, 'test'))
-
-        self.assertEqual(
-            repr(annotation),
-            ("Annotation('foo', 'bar', 'string', "
-             "Endpoint('127.0.0.1', 0, 'test'))"))
-
-        self.assertEqual(
-            repr(Annotation('foo', 'bar', 'string')),
-            "Annotation('foo', 'bar', 'string', None)")
-
 
 class EndpointTests(TestCase):
-    def test_verifyObject(self):
-        verifyObject(IEndpoint, Endpoint('127.0.0.1', 0, 'test'))
-
     def test_equality(self):
         self.assertEqual(
             Endpoint('127.0.0.1', 0, 'test'),
@@ -216,9 +188,3 @@ class EndpointTests(TestCase):
             endpoint,
             Endpoint('127.0.0.1', 0, 'test2'))
 
-    def test_repr(self):
-        endpoint = Endpoint('127.0.0.1', 0, 'test')
-
-        self.assertEqual(
-            repr(endpoint),
-            ("Endpoint('127.0.0.1', 0, 'test')"))
