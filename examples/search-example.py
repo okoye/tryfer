@@ -3,6 +3,7 @@ a basic application showing how to use tryfer to send information
 to zipkin in without twisted
 '''
 import requests
+from tryfer.decorators import http_zipper
 
 class BasicSearch(object):
     '''
@@ -24,6 +25,7 @@ class BasicSearch(object):
                 self._search(search_string)
                 print 'logged query to zipkin'
 
+    @http_zipper
     def _search(self, query):
         query = ''.join([self.base_string, query])
         r = requests.get(query)
