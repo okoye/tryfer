@@ -30,3 +30,13 @@ class DebugTracer(object):
         self.destination.write('\n')
         self.destination.flush()
 
+class ZipkinTracer(object):
+    '''
+    Send all annotations to zipkin directly
+    '''
+    def __init__(self):
+        pass #TODO
+
+    def record(self, traces):
+        raise NotImplementedError('record is currently unsupported')
+
