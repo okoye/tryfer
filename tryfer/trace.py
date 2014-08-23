@@ -8,7 +8,7 @@ import uuid
 import random
 
 from tryfer._thrift.zipkinCore import constants
-from tryfer.tracer2 import NoopTracer
+from tryfer.tracers import NoopTracer
 
 def _generate_unique_id():
     '''
