@@ -1,4 +1,5 @@
 import sys
+import logging
 from tryfer.formatters import json_formatter, base64_thrift_formatter
 from scribe_logger.writer import ScribeWriter
 
@@ -51,6 +52,7 @@ class ZipkinTracer(object):
         '''
         Write data via scribe
         '''
+        logging.debug('sending info to scribe or zipkin directly')
         self._writer.write([base64_thrift_formatter(trace, annotations)
                             for (trace, annotations) in traces], self._category)
 
