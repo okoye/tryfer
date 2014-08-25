@@ -1,5 +1,5 @@
 import sys
-from tryfer.formatters import json_formatter, base64_formatter
+from tryfer.formatters import json_formatter, base64_thrift_formatter
 from scribe_logger.writer import ScribeWriter
 
 class NoopTracer(object):
