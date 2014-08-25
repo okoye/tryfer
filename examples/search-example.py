@@ -14,8 +14,7 @@ class BasicSearch(object):
     A simple REPL program
     '''
     def __init__(self):
-        self.base_string = 'https://www.google.com/search?q='
-        self.prompt = 'search> '
+        self.prompt = 'commander> '
         self.stop_string = 'exit;'
 
     def search(self):
