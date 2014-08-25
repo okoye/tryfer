@@ -14,8 +14,8 @@ function_name = lambda: random.choice(['GET', 'POST', 'PUT', 'DELETE', 'HEAD'])
 
 
 def rpc_zipper(service_name='waldo'):
+    parent_trace = None
     def zipper(func):
-        parent_trace = None
         @functools.wraps(func)
         def wrapper(*args, **kwargs):
             '''
