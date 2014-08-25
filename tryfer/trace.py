@@ -36,7 +36,7 @@ class Trace(object):
         self.trace_id = trace_id or _generate_unique_id()
         self.span_id = span_id or _generate_unique_id()
         self.parent_span_id = parent_span_id
-        self._tracers = tracers or NoopTracer()
+        self._tracers = tracers or [NoopTracer()]
         self._endpoint = None
 
     def __eq__(self, other):
@@ -63,7 +63,8 @@ class Trace(object):
         @returns trace: a new trace object
         '''
         trace = self.__class__(name, trace_id=self.trace_id,
-                                parent_span_id=self.span_id)
+                                parent_span_id=self.span_id,
+                                tracers=self._tracers)
         trace.set_endpoint(self._endpoint)
         return trace
 

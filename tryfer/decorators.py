@@ -78,6 +78,12 @@ class ZipkinDecorator(object):
             self.parent_trace = trace
         return wrapped_decorator
 
+    def _random_hostgenerator(self):
+        pass
+
+    def _random_service_generator(self):
+        pass
+
 
 def http_zipper(func):
     raise NotImplementedError('not currently supported')
