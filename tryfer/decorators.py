@@ -10,7 +10,7 @@ import random
 import functools
 
 tracers = [DebugTracer(), ZipkinTracer()]
-function_name = lambda: random.choice(['GET', 'POST', 'PUT', 'DELETE', 'HEAD'])
+http_method = lambda: random.choice(['GET', 'POST', 'PUT', 'DELETE', 'HEAD'])
 
 
 def rpc_zipper(service_name='waldo'):
@@ -57,7 +57,25 @@ class ZipkinDecorator(object):
 
     def __call__(self, func):
         def wrapped_decorator(*args, **kwargs):
+            '''
+            do what ever we need to setup zipkin and set appropriate state info
+            '''
+            if not self.parent_trace:
+                trace = Trace(http_method(), None, None, None, tracers=tracers)
+            else:
+                trace = parent_trace.child(http_method())
+            host_name = gethostbyname(gethostname())
+            host_port = 80
+            endpoint = Endpoint(hostname_name, host_port, self.service_name)
+            trace.set_endpoint(endpoint)
+
+            #now log start point
+            logging.debug('recording server recv span')
+            trace.record(Annotation.server_recv())
             func(*args, **kwargs)
+            logging.debug('recording server send span')
+            trace.record(Annotation.server_send())
+            self.parent_trace = trace
         return wrapped_decorator
 
 
