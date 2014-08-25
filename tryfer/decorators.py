@@ -4,8 +4,11 @@ A handy decorator to add zipkin support to methods
 from tryfer.trace import Trace, Endpoint, Annotation
 from tryfer.tracers import DebugTracer, ZipkinTracer
 from socket import gethostname
+from os import environ
 
 tracers = [DebugTracer()]
+if not environ.get('ZIPKIN_DEBUG', None):
+    tracers.append(ZipkinTracer()) #assume you want data
 
 def rpc_zipper(func):
     def wrapper(*args, **kwargs):
