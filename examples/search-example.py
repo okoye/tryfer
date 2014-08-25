@@ -4,6 +4,8 @@ to zipkin in without twisted
 '''
 import logging
 import requests
+from random import random, randint
+from time import sleep
 from tryfer.decorators import rpc_zipper
 
 class BasicSearch(object):
@@ -19,18 +21,41 @@ class BasicSearch(object):
         exit = 'to stop, type %s'%self.stop_string
         stop = False
         while not stop:
-            search_string = raw_input(self.prompt)
-            if self._should_stop(search_string):
+            command = raw_input(self.prompt)
+            if self._should_stop(command):
                 stop = True
             else:
-                self._search(search_string)
-                print 'logged query to zipkin'
+                self._search(int(command))
+                logging.info('logged query to zipkin')
 
-    @rpc_zipper
-    def _search(self, query):
-        query = ''.join([self.base_string, query])
-        r = requests.get(query)
-        return r
+    def _search(self, count):
+        for iteration in xrange(count):
+            self._dist_search()
+
+    @rpc_zipper(service_name='distributed-service-simulator')
+    def _dist_search(self, n=0, current=0):
+        '''
+        attempts to simulate a distributed system call by
+        calling itself recursively.
+        '''
+        if n == 0: #first call, generate a new seed and call yourself.
+            self._dist_search(n=randint(1, 20), current=1)
+        else:
+            self._work() #simulate latency of doing some work
+            if current < n:
+                self._dist_search(n=n, current=current+1)
+            else:
+                return
+
+            #now, simulate working on returned result
+            self._work()
+            return
+
+    def _work(self):
+        '''
+        sleep for some time to simulate latency
+        '''
+        sleep(random())
 
     def _should_stop(self, query):
         return self.stop_string == query.strip()
