@@ -52,8 +52,15 @@ def rpc_zipper(service_name='waldo'):
 
 class ZipkinDecorator(object):
     def __init__(self, service_name='waldo'):
-        self.service_name = service_name
         self.parent_trace = None
+
+    def _sn(self):
+        '''shorthand for random service name generator'''
+        return self._random_service_generator()
+
+    def _hn(self):
+        '''shorthand for host name generator'''
+        return self._random_host_generator()
 
     def __call__(self, func):
         def wrapped_decorator(*args, **kwargs):
@@ -64,9 +71,9 @@ class ZipkinDecorator(object):
                 trace = Trace(http_method(), None, None, None, tracers=tracers)
             else:
                 trace = self.parent_trace.child(http_method())
-            host_name = gethostbyname(gethostname())
+            host_name = self._hn()
             host_port = 80
-            endpoint = Endpoint(host_name, host_port, self.service_name)
+            endpoint = Endpoint(host_name, host_port, self._sn)
             trace.set_endpoint(endpoint)
 
             #now log start point
@@ -78,11 +85,15 @@ class ZipkinDecorator(object):
             self.parent_trace = trace
         return wrapped_decorator
 
-    def _random_hostgenerator(self):
-        pass
+    def _random_host_generator(self):
+        octet = lambda: random.randint(2, 254)
+        return '%s.%s.%s.%s'%(octet(), octet(), octet(), octet())
 
     def _random_service_generator(self):
-        pass
+        adjectives = ['funny', 'mad', 'crazy', 'happy', 'dumb', 'sweet', 'sour', 'small',
+                'big']
+        nouns = ['marie_curie', 'newton', 'einstein', 'leibniz', 'sagan', 'gauss']
+        return '%s_%s'%(random.choice(adjectives), random.choice(nouns))
 
 
 def http_zipper(func):
