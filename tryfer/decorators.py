@@ -5,9 +5,11 @@ from tryfer.trace import Trace, Endpoint, Annotation
 from tryfer.tracers import DebugTracer, ZipkinTracer
 from socket import gethostname
 from os import environ
+import logging
 
 tracers = [DebugTracer()]
 if not environ.get('ZIPKIN_DEBUG', None):
+    logging.info('loading zipkin tracer')
     tracers.append(ZipkinTracer()) #assume you want data
 
 def rpc_zipper(func):
@@ -30,8 +32,10 @@ def rpc_zipper(func):
         trace.set_endpoint(endpoint)
 
         #now, log start point
+        logging.debug('recording server recv span')
         trace.record(Annotation.server_recv())
         result = func(*args, **kwargs)
+        logging.debug('recording server send span')
         trace.record(Annotation.server_send())
         return result
 
