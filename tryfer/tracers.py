@@ -1,16 +1,23 @@
 import sys
 from tryfer.formatters import json_formatter, base64_formatter
+from scribe_logger.writer import ScribeWriter
 
 class NoopTracer(object):
     '''
     Does absolutely nothing with a supplied traces
     '''
 
-    def __init__(self *args, **kwargs):
-        pass
+    def __init__(self, *args, **kwargs):
+        '''
+        Noop operator that does nothing
+
+        @param callback: a function that should be called with arguments during record
+        '''
+        self.callback = kwargs.get('callback', lambda x: None)
 
     def record(self, traces):
-        pass
+        self.callback(traces)
+
 
 
 class DebugTracer(object):
@@ -32,11 +39,20 @@ class DebugTracer(object):
 
 class ZipkinTracer(object):
     '''
-    Send all annotations to zipkin directly
+    Send all annotations to zipkin directly via scribe
     '''
-    def __init__(self):
-        pass #TODO
+    def __init__(self, host='localhost', port=9410, category='zipkin'):
+        self._host = host
+        self._port = port
+        self._category = category
+        self._writer = ScribeWriter(self._host, self._port, self._category)
 
     def record(self, traces):
-        raise NotImplementedError('record is currently unsupported')
+        '''
+        Write data via scribe
+        '''
+        self._writer.write([base64_thrift_formatter(trace, annotations)
+                            for (trace, annotations) in traces], self._category)
+
+
 
