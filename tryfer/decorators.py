@@ -3,7 +3,7 @@ A handy decorator to add zipkin support to methods
 '''
 from tryfer.trace import Trace, Endpoint, Annotation
 from tryfer.tracers import DebugTracer, ZipkinTracer
-from socket import gethostname
+from socket import gethostname, gethostbyname
 from os import environ
 import logging
 
@@ -22,7 +22,7 @@ def rpc_zipper(func):
                         tracers=tracers)
         #ideally, these info  would be extracted from request args.
         #hacky way to determine hostname, port and service_name
-        host_name = gethostname()
+        host_name = gethostbyname(gethostname())
         host_port = 80
         service_name = 'waldo-search'
         endpoint = Endpoint(host_name, host_port, service_name)
