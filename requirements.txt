@@ -1,5 +1,5 @@
 thrift==0.8.0
 mock
-facbook_scribe
+facebook_scribe
 scribe_logger
 requests
