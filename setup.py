@@ -17,8 +17,6 @@ setup(
     long_description=open('README.rst').read(),
     packages=find_packages('.'),
     install_requires=[
-        'Twisted >= 12.0.0',
         'thrift == 0.8.0',
-        'scrivener == 0.2'
     ],
 )
