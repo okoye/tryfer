@@ -12,9 +12,9 @@ tracers = [DebugTracer(), ZipkinTracer()]
 function_name = lambda: random.choice(['GET', 'POST', 'PUT', 'DELETE', 'HEAD'])
 
 
-def rpc_zipper(func, service_name='waldo'):
+def rpc_zipper(func):
     parent_trace = None
-    def wrapper(*args, **kwargs):
+    def wrapper(*args, service_name='waldo', **kwargs):
         '''
         do what ever we need to setup zipkin and set appropriate headers
         '''
