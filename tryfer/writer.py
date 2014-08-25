@@ -26,7 +26,7 @@ class ScribeWriter(object):
         @param message: a list of messages to be sent via scribe
         '''
         log_entry = scribe.LogEntry(category or self.category, messages)
-        result = self.client.Log(messages=log_entry)
+        result = self.client.Log(messages=[log_entry])
         if result == 0:
             logging.debug('messages sent successfully via scribe')
         else:
