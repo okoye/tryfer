@@ -90,9 +90,8 @@ class ZipkinDecorator(object):
         return '%s.%s.%s.%s'%(octet(), octet(), octet(), octet())
 
     def _random_service_generator(self):
-        adjectives = ['funny', 'mad', 'crazy', 'happy', 'dumb', 'sweet', 'sour', 'small',
-                'big']
-        nouns = ['marie_curie', 'newton', 'einstein', 'leibniz', 'sagan', 'gauss']
+        adjectives = ['funny', 'mad', 'crazy']
+        nouns = ['mariecurie', 'newton', 'leibniz', 'lovelace']
         return '%s_%s'%(random.choice(adjectives), random.choice(nouns))
 
 
