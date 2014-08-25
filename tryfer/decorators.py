@@ -73,7 +73,7 @@ class ZipkinDecorator(object):
                 trace = self.parent_trace.child(http_method())
             host_name = self._hn()
             host_port = 80
-            endpoint = Endpoint(host_name, host_port, self._sn)
+            endpoint = Endpoint(host_name, host_port, self._sn())
             trace.set_endpoint(endpoint)
 
             #now log start point
