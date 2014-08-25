@@ -7,10 +7,7 @@ from socket import gethostname
 from os import environ
 import logging
 
-tracers = [DebugTracer()]
-if not environ.get('ZIPKIN_DEBUG', None):
-    logging.info('loading zipkin tracer')
-    tracers.append(ZipkinTracer()) #assume you want data
+tracers = [DebugTracer(), ZipkinTracer()]
 
 def rpc_zipper(func):
     def wrapper(*args, **kwargs):
