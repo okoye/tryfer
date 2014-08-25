@@ -2,6 +2,7 @@
 a basic application showing how to use tryfer to send information
 to zipkin in without twisted
 '''
+import logging
 import requests
 from tryfer.decorators import rpc_zipper
 
@@ -35,6 +36,7 @@ class BasicSearch(object):
         return self.stop_string == query.strip()
 
 def main():
+    logging.basicConfig(level=logging.DEBUG)
     bs = BasicSearch()
     bs.search()
 
