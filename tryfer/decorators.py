@@ -50,6 +50,15 @@ def rpc_zipper(service_name='waldo'):
 
     return zipper
 
+class ZipkinDecorator(object):
+    def __init__(self, service_name='waldo'):
+        self.service_name = service_name
+        self.parent_trace = None
+
+    def __call__(self, func):
+        def wrapped_decorator(*args, **kwargs):
+            func(*args, **kwargs)
+        return wrapped_decorator
 
 
 def http_zipper(func):

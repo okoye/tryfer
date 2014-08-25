@@ -6,7 +6,8 @@ import logging
 import requests
 from random import random, randint
 from time import sleep
-from tryfer.decorators import rpc_zipper
+#from tryfer.decorators import rpc_zipper
+from tryfer.decorators import ZipkinDecorator
 
 class BasicSearch(object):
     '''
@@ -32,7 +33,7 @@ class BasicSearch(object):
         for iteration in xrange(count):
             self._dist_search()
 
-    @rpc_zipper(service_name='distributed-service-simulator')
+    @ZipkinDecorator(service_name='distributed-service-simulator')
     def _dist_search(self, n=0, current=0):
         '''
         attempts to simulate a distributed system call by
