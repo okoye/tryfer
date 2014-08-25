@@ -56,7 +56,9 @@ class BasicSearch(object):
         '''
         sleep for some time to simulate latency
         '''
-        sleep(random())
+        value = random()
+        logging.debug('sleeping for %s'%value)
+        sleep(value)
 
     def _should_stop(self, query):
         return self.stop_string == query.strip()
