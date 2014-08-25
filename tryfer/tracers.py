@@ -54,8 +54,6 @@ class ZipkinTracer(object):
         Write data via scribe
         '''
         logging.debug('sending info to scribe or zipkin directly')
-        self._writer.write([base64_thrift_formatter(trace, annotations)
-                            for (trace, annotations) in traces])
-
-
+        for trace, annotations in traces:
+            self._writer.write(base64_thrift_formatter(trace, annotations))
 

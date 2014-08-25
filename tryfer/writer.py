@@ -21,11 +21,11 @@ class ScribeWriter(object):
         transport.open()
         self.client = client
 
-    def write(self, messages, category=None):
+    def write(self, message, category=None):
         '''
-        @param message: a list of messages to be sent via scribe
+        @param message: a message to be sent via scribe
         '''
-        log_entry = scribe.LogEntry(category or self.category, messages)
+        log_entry = scribe.LogEntry(category or self.category, message)
         result = self.client.Log(messages=[log_entry])
         if result == 0:
             logging.debug('messages sent successfully via scribe')
