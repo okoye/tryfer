@@ -46,7 +46,8 @@ class ZipkinTracer(object):
         self._host = host
         self._port = port
         self._category = category
-        self._writer = ScribeWriter(self._host, self._port, self._category)
+        self._writer = ScribeWriter(self._host, self._port,
+                                    default_category=self._category)
 
     def record(self, traces):
         '''
@@ -54,7 +55,7 @@ class ZipkinTracer(object):
         '''
         logging.debug('sending info to scribe or zipkin directly')
         self._writer.write([base64_thrift_formatter(trace, annotations)
-                            for (trace, annotations) in traces], self._category)
+                            for (trace, annotations) in traces])
 
 
 
