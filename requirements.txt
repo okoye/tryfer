@@ -1,5 +1,4 @@
 thrift==0.8.0
 mock
 facebook_scribe
-scribe_logger
 requests
