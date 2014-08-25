@@ -21,20 +21,14 @@ class ScribeWriter(object):
         transport.open()
         self.client = client
 
-    def write(self, messages):
+    def write(self, messages, category=None):
         '''
         @param message: a list of messages to be sent via scribe
         '''
-        result = self.client.Log(messages=messages)
+        log_entry = scribe.LogEntry(category or self.category, messages)
+        result = self.client.Log(messages=log_entry)
         if result == 0:
             logging.debug('messages sent successfully via scribe')
         else:
             logging.debug('messages not sent successfully via scribe')
 
-def write(message):
-    '''
-    a convenience method to write to scribe.
-
-    @param message: a list of messages ready to send via scribe
-    '''
-    socket = TSocket.TSo
