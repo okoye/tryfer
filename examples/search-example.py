@@ -55,7 +55,7 @@ class BasicSearch(object):
         '''
         sleep for some time to simulate latency
         '''
-        value = random()
+        value = random() * 0.001
         logging.debug('sleeping for %s'%value)
         sleep(value)
 
